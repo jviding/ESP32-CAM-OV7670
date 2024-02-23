@@ -7,7 +7,7 @@ SemaphoreHandle_t I2C::i2c_handle;
 
 
 esp_err_t I2C::init(i2c_conf_t i2c_conf) {
-  ESP_LOGD(TAG, "Initializing I2C...");
+  ESP_LOGD(TAG, "Start I2C initialization...");
   ESP_LOGD(TAG, " - sda: gpio %d", i2c_conf.pin_sda);
   ESP_LOGD(TAG, " - scl: gpio %d", i2c_conf.pin_scl);
   ESP_LOGD(TAG, " - freq: %ld",    i2c_conf.freq);
@@ -42,8 +42,6 @@ esp_err_t I2C::start() {
   cmd = i2c_cmd_link_create();
   ESP_RETURN_ON_FALSE(cmd != NULL, ESP_ERR_NO_MEM, TAG, "Failed creating I2C command list.");
   ESP_RETURN_ON_ERROR(i2c_master_start(cmd), TAG, "Failed pushing 'Start signal' to I2C command list.");
-  // Done
-  ESP_LOGD(TAG, "Successfully started I2C command list.");
   return ESP_OK;
 };
 
@@ -51,22 +49,16 @@ esp_err_t I2C::stop() {
   ESP_RETURN_ON_ERROR(i2c_master_stop(cmd), TAG, "Failed pushing 'Stop signal' to I2C command list.");
   ESP_RETURN_ON_ERROR(i2c_master_cmd_begin(port, cmd, portMAX_DELAY), TAG, "Failed transmitting I2C command list.");
   i2c_cmd_link_delete(cmd);
-  // Done
-  ESP_LOGD(TAG, "Successfully stopped and transmitted I2C command list.");
   return ESP_OK;
 };
 
 esp_err_t I2C::write(uint8_t val) {
-  ESP_RETURN_ON_ERROR(i2c_master_write_byte(cmd, val, false), TAG, "Failed pushing 'write byte' to I2C command list");
-  // Done
-  ESP_LOGD(TAG, "Successfully pushed 'write byte' to I2C command list.");
+  ESP_RETURN_ON_ERROR(i2c_master_write_byte(cmd, val, false), TAG, "Failed pushing 'write byte(%02x)' to I2C command list", val);
   return ESP_OK;
 };
 
 esp_err_t I2C::read(uint8_t* val) {
   ESP_RETURN_ON_ERROR(i2c_master_read_byte(cmd, val, I2C_MASTER_NACK), TAG, "Failed pushing 'read byte' to I2C command list.");
-  // Done
-  ESP_LOGD(TAG, "Successfully pushed 'read byte' to I2C command list.");
   return ESP_OK;
 };
 
