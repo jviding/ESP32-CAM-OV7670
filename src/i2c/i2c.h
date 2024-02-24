@@ -13,7 +13,7 @@
 #define READ_ADDR     ((DEVICE_ADDR << 1) | 0x01)
 
 
-struct conf_t {
+struct _i2c_conf_t {
   gpio_num_t pin_sda = GPIO_NUM_26; // Default to 26
   gpio_num_t pin_scl = GPIO_NUM_27; // Default to 27
   uint32_t   freq    = 200 * 1000;  // Default to 200 kHz
@@ -24,7 +24,7 @@ struct conf_t {
 class I2C {
   public:
     // Struct
-    using i2c_conf_t = conf_t;
+    using i2c_conf_t = _i2c_conf_t;
 
     // Functions
     static esp_err_t init(i2c_conf_t* i2c_conf);
