@@ -6,35 +6,35 @@ i2c_cmd_handle_t I2C::cmd;
 SemaphoreHandle_t I2C::i2c_handle;
 
 
-esp_err_t I2C::init(i2c_conf_t i2c_conf) {
+esp_err_t I2C::init(i2c_conf_t* i2c_conf) {
   ESP_LOGD(TAG, "Start I2C initialization...");
-  ESP_LOGD(TAG, " - sda: gpio %d", i2c_conf.pin_sda);
-  ESP_LOGD(TAG, " - scl: gpio %d", i2c_conf.pin_scl);
-  ESP_LOGD(TAG, " - freq: %ld",    i2c_conf.freq);
-  ESP_LOGD(TAG, " - port: %d",     i2c_conf.port);
+  ESP_LOGD(TAG, " - sda: gpio %d", i2c_conf->pin_sda);
+  ESP_LOGD(TAG, " - scl: gpio %d", i2c_conf->pin_scl);
+  ESP_LOGD(TAG, " - freq: %ld",    i2c_conf->freq);
+  ESP_LOGD(TAG, " - port: %d",     i2c_conf->port);
   // Config
   const i2c_config_t conf = {
     .mode =           I2C_MODE_MASTER,
-    .sda_io_num =     i2c_conf.pin_sda,
-    .scl_io_num =     i2c_conf.pin_scl,
+    .sda_io_num =     i2c_conf->pin_sda,
+    .scl_io_num =     i2c_conf->pin_scl,
     .sda_pullup_en =  GPIO_PULLUP_ENABLE,
     .scl_pullup_en =  GPIO_PULLUP_ENABLE,
     .master = { 
-      .clk_speed =    i2c_conf.freq,
+      .clk_speed =    i2c_conf->freq,
     },
     .clk_flags =      0,
   };
   // Configure and enable
-  ESP_RETURN_ON_ERROR(i2c_param_config(i2c_conf.port, &conf), TAG, "Failed configuring I2C bus.");
-  ESP_RETURN_ON_ERROR(i2c_driver_install(i2c_conf.port, I2C_MODE_MASTER, 0, 0, 0), TAG, "Failed installing I2C driver.");
+  ESP_RETURN_ON_ERROR(i2c_param_config(i2c_conf->port, &conf), TAG, "Failed configuring I2C bus.");
+  ESP_RETURN_ON_ERROR(i2c_driver_install(i2c_conf->port, I2C_MODE_MASTER, 0, 0, 0), TAG, "Failed installing I2C driver.");
   // Create and enable Semaphore
   i2c_handle = xSemaphoreCreateBinary();
   ESP_RETURN_ON_FALSE(i2c_handle != NULL, ESP_ERR_NO_MEM, TAG, "Failed creating I2C semaphore.");
   ESP_RETURN_ON_FALSE(xSemaphoreGive(i2c_handle) == pdTRUE, ESP_ERR_NO_MEM, TAG, "Failed giving I2C semaphore upon initialization.");
   // Set port
-  port = i2c_conf.port;
+  port = i2c_conf->port;
   // Done
-  ESP_LOGD(TAG, "Successfully initialized I2C.");
+  ESP_LOGD(TAG, "Finished I2C initialization.");
   return ESP_OK;
 };
 
