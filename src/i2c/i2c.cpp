@@ -10,7 +10,7 @@ esp_err_t I2C::init(i2c_conf_t* i2c_conf) {
   ESP_LOGD(TAG, "Start I2C initialization...");
   ESP_LOGD(TAG, " - sda: gpio %d", i2c_conf->pin_sda);
   ESP_LOGD(TAG, " - scl: gpio %d", i2c_conf->pin_scl);
-  ESP_LOGD(TAG, " - freq: %ld",    i2c_conf->freq);
+  ESP_LOGD(TAG, " - freq: %ld hz",    i2c_conf->freq);
   ESP_LOGD(TAG, " - port: %d",     i2c_conf->port);
   // Config
   const i2c_config_t conf = {
