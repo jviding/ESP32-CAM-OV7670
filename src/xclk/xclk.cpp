@@ -17,7 +17,7 @@ esp_err_t XCLK::enable_timer(xclk_conf_t* xclk_conf) {
     .speed_mode      = LEDC_LOW_SPEED_MODE,
     .duty_resolution = LEDC_TIMER_1_BIT,
     .timer_num       = xclk_conf->timer,
-    .freq_hz         = xclk_conf->freq_MHz * 1000 * 1000,
+    .freq_hz         = xclk_conf->freq_Hz,
     .clk_cfg         = LEDC_AUTO_CLK,
   };
   return ledc_timer_config(&timer_conf);
@@ -40,7 +40,7 @@ esp_err_t XCLK::enable_ledc(xclk_conf_t* xclk_conf) {
 esp_err_t XCLK::init(xclk_conf_t* xclk_conf) {
   ESP_LOGD(TAG, "Start XCLK initialization...");
   ESP_LOGD(TAG, " - Use GPIO_NUM_%d",       xclk_conf->pin_xclk);
-  ESP_LOGD(TAG, " - Set frequency %ld MHz", xclk_conf->freq_MHz);
+  ESP_LOGD(TAG, " - Set frequency %ld Hz", xclk_conf->freq_Hz);
   ESP_RETURN_ON_ERROR(enable_gpio(xclk_conf),  TAG, "Failed GPIO configuration.");
   ESP_RETURN_ON_ERROR(enable_timer(xclk_conf), TAG, "Failed timer configuration.");
   ESP_RETURN_ON_ERROR(enable_ledc(xclk_conf),  TAG, "Failed LEDC configuration.");

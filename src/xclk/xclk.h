@@ -11,7 +11,7 @@
 
 struct _xclk_conf_t {
   gpio_num_t     pin_xclk  = GPIO_NUM_21;
-  uint32_t       freq_MHz  = 24;
+  uint32_t       freq_Hz   = 24*1000*1000; // 24 MHz
   ledc_channel_t chan      = LEDC_CHANNEL_0;
   ledc_timer_t   timer     = LEDC_TIMER_0;
 };
