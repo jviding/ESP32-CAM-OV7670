@@ -14,10 +14,10 @@
 
 
 struct _i2c_conf_t {
-  gpio_num_t pin_sda = GPIO_NUM_26; // Default to 26
-  gpio_num_t pin_scl = GPIO_NUM_27; // Default to 27
-  uint32_t   freq    = 200 * 1000;  // Default to 200 kHz
-  i2c_port_t port    = I2C_NUM_0;   // Default to port0
+  gpio_num_t pin_sda = GPIO_NUM_26;
+  gpio_num_t pin_scl = GPIO_NUM_27;
+  uint32_t   freq    = 200 * 1000;  // 200 kHz
+  i2c_port_t port    = I2C_NUM_0;
 };
 
 
